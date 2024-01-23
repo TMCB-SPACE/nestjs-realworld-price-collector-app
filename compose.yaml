@@ -1,0 +1,183 @@
+version: '3.9'
+
+x-cockroach-variables: &cockroach-variables
+  COCKROACH_USER: root
+  COCKROACH_DATABASE: pricing
+  PGWEB_DATABASE_URL: postgres://root@devDb:26257/pricing?sslmode=disable
+
+x-postgres-variables: &postgres-variables
+  POSTGRES_USER: root
+  POSTGRES_HOST_AUTH_METHOD: trust
+  POSTGRES_DB: pricing
+  PGDATA: /data/postgres
+  PGWEB_DATABASE_URL: postgres://root@testDb:5432/pricing?sslmode=disable
+
+x-clickhouse-variables: &clickhouse-variables
+  CLICKHOUSE_USER: root
+  CLICKHOUSE_PASSWORD: root
+  CLICKHOUSE_DB: logging
+
+x-redis-variables: &redis-variables
+  REDIS_ARGS: '--requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t82'
+
+networks:
+  pricing:
+
+services:
+  devDb:
+    image: cockroachdb/cockroach:${COCKROACH_TAG:-v23.1.13}
+    command: start-single-node --insecure --store=attrs=ssd,path=/var/lib/cockroach/
+    restart: on-failure
+    environment: *cockroach-variables
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/health?ready=1" ]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    ports:
+      - '22625:26257'
+      - '28080:8080'
+    volumes:
+      - cockroach-data:/var/lib/cockroach
+    networks:
+      - pricing
+
+  devUi:
+    image: sosedoff/pgweb:${COCKROACH_UI_TAG:-0.14.2}
+    restart: on-failure
+    environment: *cockroach-variables
+    depends_on:
+      devDb:
+        condition: service_healthy
+    ports:
+      - '25001:8081'
+    networks:
+      - pricing
+
+  devMigrate:
+    image: migrate/migrate:${MIGRATE_TAG:-v4.17.0}
+    platform: linux/amd64
+    environment: *cockroach-variables
+    entrypoint: ["sh", "-c"]
+    command: >-
+      "migrate -path=/migrations -database=cockroachdb://$${COCKROACH_USER}@devDb:26257/$${COCKROACH_DATABASE}?sslmode=disable up"
+    restart: no
+    depends_on:
+      devDb:
+        condition: service_healthy
+    volumes:
+      - ./database/api:/migrations
+    networks:
+      - pricing
+
+  testDb:
+    image: postgres:${POSTGRES_TAG:-16.1-alpine}
+    restart: on-failure
+    environment: *postgres-variables
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    ports:
+      - '25432:5432'
+    volumes:
+      - postgres-data:/data/postgres
+    networks:
+      - pricing
+
+  testUi:
+    image: sosedoff/pgweb:${POSTGRES_UI_TAG:-0.14.2}
+    restart: on-failure
+    environment: *postgres-variables
+    depends_on:
+      testDb:
+        condition: service_healthy
+    ports:
+      - '25002:8081'
+    networks:
+      - pricing
+
+  testMigrate:
+    image: migrate/migrate:${MIGRATE_TAG:-v4.17.0}
+    platform: linux/amd64
+    environment: *postgres-variables
+    entrypoint: [ "sh", "-c"]
+    command: >-
+      "migrate -path=/migrations -database=$${PGWEB_DATABASE_URL} up"
+    restart: no
+    depends_on:
+      testDb:
+        condition: service_healthy
+    volumes:
+      - ./database/api:/migrations
+    networks:
+      - pricing
+
+  logDb:
+    image: clickhouse/clickhouse-server:${CLICKHOUSE_TAG:-23.12.1-alpine}
+    environment: *clickhouse-variables
+    user: '101:101'
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:8123/ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    ports:
+      - '127.0.0.1:28123:8123'
+      - '127.0.0.1:29000:9000/tcp'
+    networks:
+      - pricing
+
+  logUi:
+    image: dbeaver/cloudbeaver:${CLICKHOUSE_UI_TAG:-23.3.2}
+    ports:
+      - "25003:8978"
+    depends_on:
+      logDb:
+        condition: service_healthy
+    networks:
+      - pricing
+
+  logMigrate:
+    image: migrate/migrate:${MIGRATE_TAG:-v4.17.0}
+    platform: linux/amd64
+    environment: *clickhouse-variables
+    entrypoint: [ "sh", "-c"]
+    command: >-
+      "migrate -path=/migrations -database=clickhouse://logDb:9000/?debug=true\\&database=$${CLICKHOUSE_DB}\\&username=$${CLICKHOUSE_USER}\\&password=$${CLICKHOUSE_PASSWORD} up"
+    restart: no
+    depends_on:
+      logDb:
+        condition: service_healthy
+    volumes:
+      - ./database/log:/migrations
+    networks:
+      - pricing
+
+  cacheDb:
+    image: redis:${REDIS_TAG:-7.2.3-alpine}
+    restart: on-failure
+    environment: *redis-variables
+    ports:
+      - "26379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - pricing
+
+  cacheUi:
+    image: oblakstudio/redisinsight:${REDIS_UI_TAG:-2.3.0}
+    ports:
+      - "25000:5000"
+    volumes:
+      - redisui-data:/data
+    networks:
+      - pricing
+
+
+volumes:
+  cockroach-data: null
+  postgres-data: null
+  redis-data: null
+  redisui-data: null

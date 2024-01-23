@@ -1,0 +1,13 @@
+name: "Compliance"
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+
+jobs:
+  compliance:
+    uses: TMCB-SPACE/.github/.github/workflows/compliance.yml@main
