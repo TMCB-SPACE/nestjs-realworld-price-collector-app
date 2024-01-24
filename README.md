@@ -89,6 +89,7 @@ How to set-up clickhouse:
 
 ![](./public/clickhouse-setup.png)
 
+
 ## Test
 
 ```shell

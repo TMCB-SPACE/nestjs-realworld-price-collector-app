@@ -30,10 +30,16 @@ jobs:
       - name: "🔍 run tests"
         run: npm run test:cov -- --ci --testLocationInResults
 
-      - name: "🚧️ generate report"
-        uses: ArtiomTr/jest-coverage-report-action@v2.2.6
+      - name: Jest Coverage Comment
+        id: coverageComment
+        uses: MishaKav/jest-coverage-comment@main
         with:
-          coverage-file: ./coverage/coverage-final.json
-          base-coverage-file: ./coverage/coverage-final.json
-          custom-title: Coverage report for backend
-          skip-step: all
+          coverage-summary-path: ./coverage/coverage-final.json
+
+#      - name: "🚧️ generate report"
+#        uses: ArtiomTr/jest-coverage-report-action@v2.2.6
+#        with:
+#          coverage-file: ./coverage/coverage-final.json
+#          base-coverage-file: ./coverage/coverage-final.json
+#          custom-title: Coverage report for backend
+#          skip-step: all
