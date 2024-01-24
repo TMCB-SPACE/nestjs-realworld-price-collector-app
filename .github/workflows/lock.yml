@@ -1,0 +1,11 @@
+name: "Lock Threads"
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  lock-threads:
+    uses: TMCB-SPACE/.github/.github/workflows/lock.yml@main

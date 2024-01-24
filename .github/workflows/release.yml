@@ -3,9 +3,10 @@ name: "Semantic release"
 on:
   push:
     branches:
-      - main
-      - alpha
-      - beta
+#      - main
+#      - alpha
+#      - beta
+      - next
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
