@@ -32,7 +32,7 @@ jobs:
       - name: "🔍 run tests"
         run: npm run test:cov -- --ci --testLocationInResults | tee ./coverage.txt && exit ${PIPESTATUS[0]}
 
-      - name: Jest Coverage Comment
+      - name: "🚧️ generate pull request report"
         id: coverageComment
         uses: MishaKav/jest-coverage-comment@main
         with:
@@ -48,11 +48,3 @@ jobs:
           coverage-title: Coverage report
           coverage-path: ./coverage.txt
           coverage-path-prefix: "${{ github.head_ref }}/src/"
-
-#      - name: "🚧️ generate report"
-#        uses: ArtiomTr/jest-coverage-report-action@v2.2.6
-#        with:
-#          coverage-file: ./coverage/coverage-final.json
-#          base-coverage-file: ./coverage/coverage-final.json
-#          custom-title: Coverage report for backend
-#          skip-step: all
