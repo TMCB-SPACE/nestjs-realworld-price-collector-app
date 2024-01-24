@@ -37,6 +37,15 @@ jobs:
         uses: MishaKav/jest-coverage-comment@main
         with:
           coverage-summary-path: ./coverage/coverage-summary.json
+          title: Jest Coverage Report
+          summary-title: Summary
+          badge-title: Coverage
+          hide-comment: false
+          create-new-comment: false
+          hide-summary: false
+          junitxml-title: Runner overiew
+          junitxml-path: ./coverage/junit.xml
+          coverage-title: Coverage report
           coverage-path: ./coverage.txt
           coverage-path-prefix: "${{ github.head_ref }}/src/"
 

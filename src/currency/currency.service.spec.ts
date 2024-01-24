@@ -68,23 +68,23 @@ describe('CurrencyService', () => {
       );
     });
 
-    // it('should throw a ConflictException on duplicate', async () => {
-    //   currencyRepository.insert = jest.fn(() =>
-    //     Promise.reject(
-    //       new QueryFailedError('query', [], {
-    //         name: 'test',
-    //         // @ts-expect-error typing postgres is incomplete
-    //         code: '23505',
-    //         routine: 'NewUniquenessConstraintViolationError',
-    //       }),
-    //     ),
-    //   );
-    //
-    //   await expect(() => currencyService.createOne(createCurrencyDto)).rejects.toThrow(
-    //     new ConflictException('Currency already exists'),
-    //   );
-    // });
-    //
+    it('should throw a ConflictException on duplicate', async () => {
+      currencyRepository.insert = jest.fn(() =>
+        Promise.reject(
+          new QueryFailedError('query', [], {
+            name: 'test',
+            // @ts-expect-error typing postgres is incomplete
+            code: '23505',
+            routine: 'NewUniquenessConstraintViolationError',
+          }),
+        ),
+      );
+
+      await expect(() => currencyService.createOne(createCurrencyDto)).rejects.toThrow(
+        new ConflictException('Currency already exists'),
+      );
+    });
+
     // it('should throw a BadRequestException on driver error', async () => {
     //   currencyRepository.insert = jest.fn(() =>
     //     Promise.reject(
