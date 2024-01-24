@@ -1,0 +1,39 @@
+name: "Coverage"
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: "☁️ checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "🔧 setup node"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21
+
+      - name: "🔧 install npm@latest"
+        run: npm i -g npm@latest
+
+      - name: "📦 install dependencies"
+        uses: bahmutov/npm-install@v1.8.15
+
+      - name: "🔍 run tests"
+        run: npm run test:cov -- --ci --testLocationInResults
+
+      - name: "🚧️ generate report"
+        uses: ArtiomTr/jest-coverage-report-action@v2.2.6
+        with:
+          coverage-file: ./coverage/coverage-final.json
+          base-coverage-file: ./coverage/coverage-final.json
+          custom-title: Coverage report for backend
+          skip-step: all
