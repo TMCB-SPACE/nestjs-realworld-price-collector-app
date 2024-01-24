@@ -30,13 +30,15 @@ jobs:
         uses: bahmutov/npm-install@v1.8.15
 
       - name: "🔍 run tests"
-        run: npm run test:cov -- --ci --testLocationInResults
+        run: npm run test:cov -- --ci --testLocationInResults | tee ./coverage.txt && exit ${PIPESTATUS[0]}
 
       - name: Jest Coverage Comment
         id: coverageComment
         uses: MishaKav/jest-coverage-comment@main
         with:
           coverage-summary-path: ./coverage/coverage-summary.json
+          coverage-path: ./coverage.txt
+
 
 #      - name: "🚧️ generate report"
 #        uses: ArtiomTr/jest-coverage-report-action@v2.2.6
