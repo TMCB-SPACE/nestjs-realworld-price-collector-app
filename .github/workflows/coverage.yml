@@ -34,7 +34,8 @@ jobs:
         id: coverageComment
         uses: MishaKav/jest-coverage-comment@main
         with:
-          coverage-summary-path: ./coverage/coverage-final.json
+          coverage-summary-path: ./coverage/coverage-summary.json
+
 
 #      - name: "🚧️ generate report"
 #        uses: ArtiomTr/jest-coverage-report-action@v2.2.6

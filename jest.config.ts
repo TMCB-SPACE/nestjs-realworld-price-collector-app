@@ -21,7 +21,7 @@ const config: Config = {
       lines: 80,
     },
   },
-  coverageReporters: [['text', { skipFull: true }], 'text-summary', 'clover', 'html', 'json'],
+  coverageReporters: [['text', { skipFull: true }], 'text-summary', 'clover', 'html', 'json', 'json-summary'],
 };
 
 export default config;
