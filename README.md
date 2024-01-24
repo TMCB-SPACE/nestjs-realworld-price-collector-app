@@ -1,8 +1,13 @@
 # ![RealWorld NestJS Price Collector App](./public/logo.png)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTMCB-SPACE%2Fnestjs-realworld-price-collector-app.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FTMCB-SPACE%2Fnestjs-realworld-price-collector-app?ref=badge_shield)
 
 > ### NestJS codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) spec and API.
 
+[![Commits](https://img.shields.io/github/commit-activity/w/TMCB-SPACE/nestjs-realworld-price-collector-app?style=flat)](https://github.com/TMCB-SPACE/nestjs-realworld-price-collector-app/pulse)
+[![Issues](https://img.shields.io/github/issues/TMCB-SPACE/nestjs-realworld-price-collector-app.svg?style=flat)](https://github.com/TMCB-SPACE/nestjs-realworld-price-collector-app/issues)
+[![Releases](https://img.shields.io/github/v/release/TMCB-SPACE/nestjs-realworld-price-collector-app.svg?style=flat)](https://github.com/TMCB-SPACE/nestjs-realworld-price-collector-app/releases)
+[![Commitizen Friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![License](https://img.shields.io/github/license/TMCB-SPACE/nestjs-realworld-price-collector-app)](./LICENSE)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTMCB-SPACE%2Fnestjs-realworld-price-collector-app.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FTMCB-SPACE%2Fnestjs-realworld-price-collector-app?ref=badge_shield)
 
 ### [Demo](https://demo.realworld.io/)&nbsp;&nbsp;&nbsp;&nbsp;[RealWorld](https://github.com/gothinkster/realworld)
 

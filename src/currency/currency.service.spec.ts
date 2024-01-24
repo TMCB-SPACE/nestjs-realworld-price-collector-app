@@ -85,22 +85,22 @@ describe('CurrencyService', () => {
       );
     });
 
-    // it('should throw a BadRequestException on driver error', async () => {
-    //   currencyRepository.insert = jest.fn(() =>
-    //     Promise.reject(
-    //       new QueryFailedError('query', [], {
-    //         name: 'test',
-    //         // @ts-expect-error typing postgres is incomplete
-    //         code: '00000',
-    //         routine: 'UnknownError',
-    //       }),
-    //     ),
-    //   );
-    //
-    //   await expect(() => currencyService.createOne(createCurrencyDto)).rejects.toThrow(
-    //     new BadRequestException('Invalid currency data'),
-    //   );
-    // });
+    it('should throw a BadRequestException on driver error', async () => {
+      currencyRepository.insert = jest.fn(() =>
+        Promise.reject(
+          new QueryFailedError('query', [], {
+            name: 'test',
+            // @ts-expect-error typing postgres is incomplete
+            code: '00000',
+            routine: 'UnknownError',
+          }),
+        ),
+      );
+
+      await expect(() => currencyService.createOne(createCurrencyDto)).rejects.toThrow(
+        new BadRequestException('Invalid currency data'),
+      );
+    });
   });
 
   describe('findOneByCode', () => {
