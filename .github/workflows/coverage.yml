@@ -38,6 +38,8 @@ jobs:
         with:
           coverage-summary-path: ./coverage/coverage-summary.json
           coverage-path: ./coverage.txt
+          coverage-path-prefix: "main/src"
+#          coverage-path-prefix: "tree/{branch}/src"
 
 #      - name: "🚧️ generate report"
 #        uses: ArtiomTr/jest-coverage-report-action@v2.2.6
