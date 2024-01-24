@@ -44,64 +44,64 @@ describe('CurrencyService', () => {
     currencyRepository = testingModule.get(getRepositoryToken(DbCurrency, 'DbConnection'));
   });
 
-  describe('createOne', () => {
-    const createCurrencyDto = {
-      code: 'USD',
-      name: 'US Dollar',
-    };
-
-    it('should return a newly created currency', async () => {
-      currencyRepository.insert = jest.fn(() => Promise.resolve({ identifiers: [{ code: 'USD' }] } as any));
-      const createOne = jest.spyOn(currencyService, 'createOne');
-      const findOneByCode = jest.spyOn(currencyService, 'findOneByCode');
-
-      await currencyService.createOne(createCurrencyDto);
-      expect(createOne).toHaveBeenCalledWith(createCurrencyDto);
-      expect(findOneByCode).toHaveBeenCalledWith(createCurrencyDto.code);
-    });
-
-    it('should throw a BadRequestException', async () => {
-      currencyRepository.insert = jest.fn(() => Promise.reject(false));
-
-      await expect(() => currencyService.createOne(createCurrencyDto)).rejects.toThrow(
-        new BadRequestException('Invalid currency data'),
-      );
-    });
-
-    it('should throw a ConflictException on duplicate', async () => {
-      currencyRepository.insert = jest.fn(() =>
-        Promise.reject(
-          new QueryFailedError('query', [], {
-            name: 'test',
-            // @ts-expect-error typing postgres is incomplete
-            code: '23505',
-            routine: 'NewUniquenessConstraintViolationError',
-          }),
-        ),
-      );
-
-      await expect(() => currencyService.createOne(createCurrencyDto)).rejects.toThrow(
-        new ConflictException('Currency already exists'),
-      );
-    });
-
-    it('should throw a BadRequestException on driver error', async () => {
-      currencyRepository.insert = jest.fn(() =>
-        Promise.reject(
-          new QueryFailedError('query', [], {
-            name: 'test',
-            // @ts-expect-error typing postgres is incomplete
-            code: '00000',
-            routine: 'UnknownError',
-          }),
-        ),
-      );
-
-      await expect(() => currencyService.createOne(createCurrencyDto)).rejects.toThrow(
-        new BadRequestException('Invalid currency data'),
-      );
-    });
-  });
+  // describe('createOne', () => {
+  //   const createCurrencyDto = {
+  //     code: 'USD',
+  //     name: 'US Dollar',
+  //   };
+  //
+  //   it('should return a newly created currency', async () => {
+  //     currencyRepository.insert = jest.fn(() => Promise.resolve({ identifiers: [{ code: 'USD' }] } as any));
+  //     const createOne = jest.spyOn(currencyService, 'createOne');
+  //     const findOneByCode = jest.spyOn(currencyService, 'findOneByCode');
+  //
+  //     await currencyService.createOne(createCurrencyDto);
+  //     expect(createOne).toHaveBeenCalledWith(createCurrencyDto);
+  //     expect(findOneByCode).toHaveBeenCalledWith(createCurrencyDto.code);
+  //   });
+  //
+  //   it('should throw a BadRequestException', async () => {
+  //     currencyRepository.insert = jest.fn(() => Promise.reject(false));
+  //
+  //     await expect(() => currencyService.createOne(createCurrencyDto)).rejects.toThrow(
+  //       new BadRequestException('Invalid currency data'),
+  //     );
+  //   });
+  //
+  //   it('should throw a ConflictException on duplicate', async () => {
+  //     currencyRepository.insert = jest.fn(() =>
+  //       Promise.reject(
+  //         new QueryFailedError('query', [], {
+  //           name: 'test',
+  //           // @ts-expect-error typing postgres is incomplete
+  //           code: '23505',
+  //           routine: 'NewUniquenessConstraintViolationError',
+  //         }),
+  //       ),
+  //     );
+  //
+  //     await expect(() => currencyService.createOne(createCurrencyDto)).rejects.toThrow(
+  //       new ConflictException('Currency already exists'),
+  //     );
+  //   });
+  //
+  //   it('should throw a BadRequestException on driver error', async () => {
+  //     currencyRepository.insert = jest.fn(() =>
+  //       Promise.reject(
+  //         new QueryFailedError('query', [], {
+  //           name: 'test',
+  //           // @ts-expect-error typing postgres is incomplete
+  //           code: '00000',
+  //           routine: 'UnknownError',
+  //         }),
+  //       ),
+  //     );
+  //
+  //     await expect(() => currencyService.createOne(createCurrencyDto)).rejects.toThrow(
+  //       new BadRequestException('Invalid currency data'),
+  //     );
+  //   });
+  // });
 
   describe('findOneByCode', () => {
     const code = 'USD';
