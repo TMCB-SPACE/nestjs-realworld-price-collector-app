@@ -36,7 +36,6 @@ jobs:
         with:
           coverage-summary-path: ./coverage/coverage-summary.json
 
-
 #      - name: "🚧️ generate report"
 #        uses: ArtiomTr/jest-coverage-report-action@v2.2.6
 #        with:
