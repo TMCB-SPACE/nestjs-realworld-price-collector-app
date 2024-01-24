@@ -22,6 +22,7 @@ const config: Config = {
     },
   },
   coverageReporters: [['text', { skipFull: true }], 'text-summary', 'clover', 'html', 'json', 'json-summary'],
+  reporters: [['jest-junit', { outputDirectory: 'coverage', outputName: 'junit.xml' }]],
 };
 
 export default config;
