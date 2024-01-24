@@ -1,4 +1,5 @@
 # ![RealWorld NestJS Price Collector App](./public/logo.png)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTMCB-SPACE%2Fnestjs-realworld-price-collector-app.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FTMCB-SPACE%2Fnestjs-realworld-price-collector-app?ref=badge_shield)
 
 > ### NestJS codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) spec and API.
 
@@ -107,3 +108,6 @@ npm run test:cov
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTMCB-SPACE%2Fnestjs-realworld-price-collector-app.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTMCB-SPACE%2Fnestjs-realworld-price-collector-app?ref=badge_large)
